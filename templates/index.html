@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Scanner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Vulnerability Scanner</h2>
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="doc_application">Doc Application:</label>
+                <input type="text" class="form-control" id="doc_application" name="doc_application" required>
+            </div>
+            <div class="form-group">
+                <label for="application_registry">Application Registry:</label>
+                <input type="text" class="form-control" id="application_registry" name="application_registry" required>
+            </div>
+            <div class="form-group">
+                <label for="base_image">Base Image:</label>
+                <input type="text" class="form-control" id="base_image" name="base_image" required>
+            </div>
+            <div class="form-group">
+                <label for="baseimage_registry">Base Image Registry:</label>
+                <input type="text" class="form-control" id="baseimage_registry" name="baseimage_registry" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger mt-3">
+                    <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
