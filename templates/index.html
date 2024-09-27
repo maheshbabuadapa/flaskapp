@@ -27,6 +27,10 @@
             background-color: #0056b3;
             border-color: #004085;
         }
+        .download-section {
+            margin-top: 30px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +51,6 @@
                     <option value="base/nodesjs-rhel9">base/nodesjs-rhel9</option>
                 </select>
             </div>
-            <!-- Removed fields for application_registry and baseimage_registry as they are now hardcoded -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         {% with messages = get_flashed_messages() %}
@@ -61,6 +64,14 @@
                 </div>
             {% endif %}
         {% endwith %}
+
+        <!-- Download Section -->
+        {% if download_link %}
+        <div class="download-section">
+            <h4>Your file is ready for download!</h4>
+            <a href="{{ url_for('download_file') }}" class="btn btn-success">Download Excel File</a>
+        </div>
+        {% endif %}
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.0/dist/umd/popper.min.js"></script>

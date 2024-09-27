@@ -86,6 +86,7 @@ def update_vulnerabilities(doc_application_data, base_image_data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    download_link = None
     if request.method == 'POST':
         # Get form data (no longer fetching application_registry and baseimage_registry)
         doc_application = request.form.get('doc_application')
@@ -123,22 +124,12 @@ def index():
         updated_filename = update_vulnerabilities(doc_application_data, base_image_data)
         if updated_filename:
             session['updated_filename'] = updated_filename  # Store filename in session
-            return redirect(url_for('download'))  # Redirect to download page
+            download_link = True  # Set download link flag to true
         else:
             flash("An error occurred while processing the data.")
             return redirect(url_for('index'))
 
-    return render_template('index.html')
-
-
-@app.route('/download')
-def download():
-    filename = session.get('updated_filename')  # Retrieve filename from session
-    if filename:
-        return render_template('download.html', filename=filename)
-    else:
-        flash("No file available for download.")
-        return redirect(url_for('index'))
+    return render_template('index.html', download_link=download_link)
 
 
 @app.route('/download_file')
