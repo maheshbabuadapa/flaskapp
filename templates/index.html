@@ -5,27 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vulnerability Scanner</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <h2>Vulnerability Scanner</h2>
         <form action="/" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> <!-- CSRF token is now included automatically by Flask-WTF -->
             <div class="form-group">
                 <label for="doc_application">Doc Application:</label>
-                <input type="text" class="form-control" id="doc_application" name="doc_application" required>
-            </div>
-            <div class="form-group">
-                <label for="application_registry">Application Registry:</label>
-                <input type="text" class="form-control" id="application_registry" name="application_registry" required>
+                <input type="text" class="form-control" id="doc_application" name="doc_application" placeholder="Enter Doc Application" required>
             </div>
             <div class="form-group">
                 <label for="base_image">Base Image:</label>
-                <input type="text" class="form-control" id="base_image" name="base_image" required>
+                <select class="form-control" id="base_image" name="base_image" required>
+                    <option value="" disabled selected>Select a base image</option>
+                    <option value="base/python3-rhel9">base/python3-rhel9</option>
+                    <option value="base/httpd-rhel9">base/httpd-rhel9</option>
+                    <option value="base/nodesjs-rhel9">base/nodesjs-rhel9</option>
+                </select>
             </div>
-            <div class="form-group">
-                <label for="baseimage_registry">Base Image Registry:</label>
-                <input type="text" class="form-control" id="baseimage_registry" name="baseimage_registry" required>
-            </div>
+            <!-- Removed fields for application_registry and baseimage_registry as they are now hardcoded -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         {% with messages = get_flashed_messages() %}
@@ -40,5 +62,8 @@
             {% endif %}
         {% endwith %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

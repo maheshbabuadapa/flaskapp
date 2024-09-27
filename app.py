@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_file, redirect, url_for, flash
+from flask_wtf import CSRFProtect
 import os
 import pandas as pd
 import requests
@@ -8,7 +9,8 @@ aqua_id = os.getenv('AQUA_ID')
 aqua_password = os.getenv('AQUA_PASSWORD')
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Required for flash messages
+app.secret_key = 'your_secret_key_here'  # Required for sessions and CSRF protection
+csrf = CSRFProtect(app)  # Enable CSRF protection
 
 # Function to perform login and retrieve the token
 def perform_login():
@@ -85,13 +87,16 @@ def update_vulnerabilities(doc_application_data, base_image_data):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Get form data
+        # Get form data (no longer fetching application_registry and baseimage_registry)
         doc_application = request.form.get('doc_application')
-        application_registry = request.form.get('application_registry')
         base_image = request.form.get('base_image')
-        baseimage_registry = request.form.get('baseimage_registry')
 
-        print(f"Form Data - Doc Application: {doc_application}, Application Registry: {application_registry}, Base Image: {base_image}, Base Image Registry: {baseimage_registry}")
+        # Hard-coded values for application_registry and baseimage_registry
+        application_registry = 'application-registry'
+        baseimage_registry = 'baseimage-registry'
+
+        print(f"Form Data - Doc Application: {doc_application}, Base Image: {base_image}")
+        print(f"Hard-coded Registries - Application Registry: {application_registry}, Base Image Registry: {baseimage_registry}")
 
         # Perform login
         token = perform_login()
