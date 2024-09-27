@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, flash
+from flask import Flask, render_template, request, send_file, redirect, url_for, flash, session
 from flask_wtf import CSRFProtect
 import os
 import pandas as pd
@@ -122,12 +122,33 @@ def index():
         # Update vulnerabilities and save to Excel
         updated_filename = update_vulnerabilities(doc_application_data, base_image_data)
         if updated_filename:
-            return send_file(updated_filename, as_attachment=True)
+            session['updated_filename'] = updated_filename  # Store filename in session
+            return redirect(url_for('download'))  # Redirect to download page
         else:
             flash("An error occurred while processing the data.")
             return redirect(url_for('index'))
 
     return render_template('index.html')
+
+
+@app.route('/download')
+def download():
+    filename = session.get('updated_filename')  # Retrieve filename from session
+    if filename:
+        return render_template('download.html', filename=filename)
+    else:
+        flash("No file available for download.")
+        return redirect(url_for('index'))
+
+
+@app.route('/download_file')
+def download_file():
+    filename = session.get('updated_filename')  # Retrieve filename from session
+    if filename:
+        return send_file(filename, as_attachment=True)
+    else:
+        flash("No file available for download.")
+        return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
