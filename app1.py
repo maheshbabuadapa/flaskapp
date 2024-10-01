@@ -17,7 +17,7 @@ try:
     )
     # Test the connection
     redis_client.ping()
-    print("Connected to Redis!")
+    print("Connected to Redis with password authentication!")
 except redis.ConnectionError as e:
     print(f"Could not connect to Redis: {e}")
     exit(1)
